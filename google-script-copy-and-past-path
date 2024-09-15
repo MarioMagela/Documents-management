@@ -1,0 +1,40 @@
+function copiarPastas() {
+  var pastaOrigemId = 'ID_DA_PASTA_ORIGEM'; // Substitua pelo ID real da pasta de origem
+  var pastaDestinoId = 'ID_DA_PASTA_DESTINO'; // Substitua pelo ID real da pasta de destino
+
+  var pastaOrigem = DriveApp.getFolderById(pastaOrigemId);
+  var pastaDestino = DriveApp.getFolderById(pastaDestinoId);
+
+  var arquivos = pastaOrigem.getFiles();
+  var subPastas = pastaOrigem.getFolders();
+
+  // Copiando arquivos
+  while (arquivos.hasNext()) {
+    var arquivo = arquivos.next();
+    arquivo.makeCopy(arquivo.getName(), pastaDestino);
+  }
+
+  // Copiando subpastas
+  while (subPastas.hasNext()) {
+    var subPasta = subPastas.next();
+    var novaSubPasta = pastaDestino.createFolder(subPasta.getName());
+    copiarConteudo(subPasta, novaSubPasta);
+  }
+}
+
+function copiarConteudo(pastaOrigem, pastaDestino) {
+  var arquivos = pastaOrigem.getFiles();
+  var subPastas = pastaOrigem.getFolders();
+
+  // Copiando arquivos
+  while (arquivos.hasNext()) {
+    var arquivo = arquivos.next();
+    arquivo.makeCopy(arquivo.getName(), pastaDestino);
+  }
+
+  // Copiando subpastas
+  while (subPastas.hasNext()) {
+    var subPasta = subPastas.next();
+    var novaSubPasta = pastaDestino.createFolder(subPasta.getName());
+    copiarConteudo(subPasta, novaSubPasta);
+  }
